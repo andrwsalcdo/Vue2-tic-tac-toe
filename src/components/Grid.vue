@@ -1,27 +1,36 @@
 <template>
-  <table class="grid">
-    <tr>
-      <cell name="1"></cell>
-      <cell name="2"></cell>
-      <cell name="3"></cell>
-    </tr>
-    <tr>
-      <cell name="4"></cell>
-      <cell name="5"></cell>
-      <cell name="6"></cell>
-    </tr>
-    <tr>
-      <cell name="7"></cell>
-      <cell name="8"></cell>
-      <cell name="9"></cell>
-    </tr>
-  </table>
+      <div>
+            <!-- :class is shorthand syntax for vue's
+                v-bind:class. it helps to dynamically toggle classes
+                depending upon the value of an attribute
+             -->
+            <div class="gameStatus" :class="gameStatusColor">
+                  {{ gameStatusMessage }}
+            </div>
+            <table class="grid">
+              <tr>
+                <cell name="1"></cell>
+                <cell name="2"></cell>
+                <cell name="3"></cell>
+              </tr>
+              <tr>
+                <cell name="4"></cell>
+                <cell name="5"></cell>
+                <cell name="6"></cell>
+              </tr>
+              <tr>
+                <cell name="7"></cell>
+                <cell name="8"></cell>
+                <cell name="9"></cell>
+              </tr>
+            </table>
+      </div>
 </template>
 
 <script>
-    import Cell from './Cell.vue'
+import Cell from './Cell.vue'
 
-    export default {
+export default {
       components: { Cell },
       data () {
           return {
@@ -56,7 +65,7 @@
 
       computed: {
             //helper property to get non-active player
-            nonActivePlayer() {
+            nonActivePlayer () {
                   if (this.activePlayer === 'O') {
                       return 'X'
                   }
@@ -65,13 +74,50 @@
             }
       },
 
+      // {object} feature available in Vue. listens for any change
+      //in any of the data property and helps you to perform certain actions
+      watch: {
+            //watches for change in the value of gameStatus and changes
+            //the status message and color accordingly
+            gameStatus () {
+                  if (this.gameStatus === 'win') {
+                        this.gameStatusColor = 'statusWin'
+
+                        this.gameStatusMessage = `${this.activePlayer} Wins !`
+
+                        return
+                  } else if (this.gameStatus === 'draw') {
+                        this.gameStatusColor = 'statusDraw'
+
+                        this.gameStatusMessage = 'Draw !'
+
+                        return
+                  }
+
+                  this.gameStatusMessage = `${this.activePlayer}'s turn`
+            }
+      },
+
       methods: {
             //changes the active player to non-active player with the help of the
             //nonActivePlayer computed property
-            changePlayer() {
+            changePlayer () {
                   this.activePlayer = this.nonActivePlayer
             },
-      }, 
+            //returns the game status to the gameStatus property
+            changeGameStatus () {
+                  if (this.checkForWin()) {
+                      return this.gameIsWon()
+                  //checks if the game is still not won, and all cells are filled
+                } else if (this.moves === 9) {
+                      //sets the status to draw
+                      return 'draw'
+                }
+                //sets the status to turn
+                return 'turn'
+            },
+
+      },
 
       created () {
             //listens for a strike made by the user on cell
@@ -91,7 +137,7 @@
       }
 
 
-    }
+}
 </script>
 
 <style>
