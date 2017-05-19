@@ -1,14 +1,21 @@
 <template>
-  <!-- holds mark X or O-->  
+  <!-- holds mark X or O-->
   <td class="cell">{{ mark }}</td>
 
 </template>
 
 <script>
-    export default {
-        data () {}
-
-    }
+  export default {
+      props: ['name'],
+      data () {
+          return {
+              //enables the player to place a mark
+              frozen: false,
+              //holds X or O to be displayed in the <td> 
+              mark: ''
+          }
+      }
+  }
 </script>
 
 <style>
