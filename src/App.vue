@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-
+    <div id="details">
+      <h1>Tic Tac Toe</h1>
+    </div>
+    <grid></grid>
   </div>
 </template>
 
@@ -78,6 +81,6 @@ h1 {
   float: right;
   font-size: 1.5em;
   font-weight: bold;
-  margin-left: 20px; 
+  margin-left: 20px;
 }
 </style>

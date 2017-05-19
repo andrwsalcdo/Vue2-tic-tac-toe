@@ -1,4 +1,6 @@
 <template>
+  <!-- holds mark X or O-->  
+  <td class="cell">{{ mark }}</td>
 
 </template>
 
@@ -42,6 +44,6 @@
 }
 
 tr:nth-of-type(3) .cell {
-  border-bottom-color: transparent; 
+  border-bottom-color: transparent;
 }
 </style>
