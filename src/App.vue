@@ -1,9 +1,16 @@
 <template>
-  <div id="app">
-    <div id="details">
-      <h1>Tic Tac Toe</h1>
-    </div>
-    <grid></grid>
+  <div>
+        <div class="scoreBoard">
+          <span>O has {{ wins.O }} wins</span>
+          <h2>Score Board</h2>
+          <span>X has {{ wins.X }} wins</span>
+        </div>
+        <div id="app">
+            <div id="details">
+              <h1>Tic Tac Toe</h1>
+            </div>
+            <grid></grid>
+        </div>
   </div>
 </template>
 
@@ -11,7 +18,7 @@
 import Grid from './components/Grid.vue'
 
 export default {
-  components: { Grid }, 
+  components: { Grid },
   name: 'app',
   data () {
     return {
@@ -21,6 +28,10 @@ export default {
           X: 0
         }
     }
+  },
+
+  created () {
+      Event.$on('win', winner => this.wins[winner]++)
   }
 }
 </script>
