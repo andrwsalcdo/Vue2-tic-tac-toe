@@ -19,7 +19,10 @@
 </template>
 
 <script>
+    import Cell from './Cell.vue'
+
     export default {
+      components: { Cell },
       data () {
           return {
               //can be O or X
@@ -27,7 +30,7 @@
               //maintains the status of the game: turn/win/draw
               gameStatus: 'turn',
 
-              gameStatusMessage: `O's turn`
+              gameStatusMessage: `O's turn`,
               //status color is used as background-color in the status bar
               // it can hold the name of either of the following CSS classes
               // statusTurn (default) is yellow for a turn
@@ -47,9 +50,47 @@
                   [1,2,3], [4,5,6], [7,8,9], //row
                   [1,4,7], [2,5,8], [3,6,9], //columns
                   [1,5,9], [3,5,7] //diagonals
-                ], 
+                ],
           }
+      },
+
+      computed: {
+            //helper property to get non-active player
+            nonActivePlayer() {
+                  if (this.activePlayer === 'O') {
+                      return 'X'
+                  }
+
+                  return 'O'
+            }
+      },
+
+      methods: {
+            //changes the active player to non-active player with the help of the
+            //nonActivePlayer computed property
+            changePlayer() {
+                  this.activePlayer = this.nonActivePlayer
+            },
+      }, 
+
+      created () {
+            //listens for a strike made by the user on cell
+            //it is called by the Cell component
+            Event.$on('strike', (cellNumber) => {
+                  //sets X or O in the clicked cell of the cells array
+                  this.cells[cellNumber] = this.activePlayer
+
+                  //increments the number of moves
+                  this.moves++
+
+                  //stores the game status by calling the changeGameStatus method
+                  this.gameStatus = this.changeGameStatus()
+
+                  this.changePlayer()
+            })
       }
+
+
     }
 </script>
 
