@@ -10,6 +10,7 @@
               <h1>Tic Tac Toe</h1>
             </div>
             <grid></grid>
+            <button class="restart" @click="restart">Restart</button>
         </div>
   </div>
 </template>
@@ -28,6 +29,16 @@ export default {
           X: 0
         }
     }
+  },
+
+  methods: {
+      restart () {
+          Event.$emit('clearCell')
+
+          Event.$emit('gridReset')
+
+          this.matches++
+      }
   },
 
   created () {

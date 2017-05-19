@@ -173,6 +173,17 @@ export default {
 
                   this.changePlayer()
             })
+
+            //listens for a restart button press
+            //the data of the component is reinitialized
+            // it is called by the App component
+
+            // $data returns the whole data object.
+            // $options.data() returns the initial state of the data
+                //as set in the object 
+            Event.$on('gridReset', () => {
+                  Object.assign(this.$data, this.$options.data())
+            })
       }
 
 
