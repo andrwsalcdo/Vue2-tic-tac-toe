@@ -82,10 +82,8 @@ export default {
             gameStatus () {
                   if (this.gameStatus === 'win') {
                         this.gameStatusColor = 'statusWin'
-
-                        this.gameStatusMessage = `${this.activePlayer} Wins !`
-
                         return
+
                   } else if (this.gameStatus === 'draw') {
                         this.gameStatusColor = 'statusDraw'
 
@@ -94,7 +92,7 @@ export default {
                         return
                   }
 
-                  this.gameStatusMessage = `${this.activePlayer}'s turn`
+                        this.gameStatusMessage = `${this.activePlayer}'s turn`
             }
       },
 
@@ -103,6 +101,34 @@ export default {
             //nonActivePlayer computed property
             changePlayer () {
                   this.activePlayer = this.nonActivePlayer
+            },
+            //checks for possible win conditions from the data
+            checkForWin() {
+                  for (let i=0; i < this.winConditions.length; i++) {
+                      //gets a single condition wc from the whole array
+                      let wc = this.winConditions[i]
+                      let cells = this.cells
+
+                      //compares 3 cell values based on the cells in the condition
+                      if (this.cellsAreEqual(cells[wc[0]], cells[wc[1]], cells[wc[2]])) {
+                          return true
+                      }
+                  }
+
+                  return false
+            },
+            gameIsWon() {
+                  //fires win event for the App component to change the scoreBoard
+                  Event.$emit('win', this.activePlayer)
+
+                  //sets the game status message
+                  this.gameStatusMessage = `${this.activePlayer} Wins !`
+
+                  //fires an event for the Cell to freeze
+                  Event.$emit('freeze')
+
+                  //sets the status to win
+                  return 'win'
             },
             //returns the game status to the gameStatus property
             changeGameStatus () {
@@ -114,8 +140,21 @@ export default {
                       return 'draw'
                 }
                 //sets the status to turn
-                return 'turn'
+                return  `${this.activePlayer}'s turn`
             },
+
+            //helper function for comparing cell values
+            cellsAreEqual() {
+                let len = arguments.length;
+
+                //loops through each value and compares them with an empty string
+                //and for inequality
+                for (let i=1; i < len; i++) {
+                    if (arguments[i] === '' || arguments[i] !== arguments[i-1])
+                        return false;
+                }
+                return true;
+            }
 
       },
 

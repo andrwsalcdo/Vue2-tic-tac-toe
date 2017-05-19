@@ -29,6 +29,10 @@
               }
           }
       },
+
+      created () {
+            Event.$on('freeze', () => this.frozen = true)
+      }
   }
 </script>
 
